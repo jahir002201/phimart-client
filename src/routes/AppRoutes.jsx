@@ -18,22 +18,31 @@ import ResetPasswordConfirm from '../components/Registration/ResetPasswordConfir
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/" element={<MainLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/activate/:uid/:token" element={<ActivateAccount />} />
-                <Route path="/resend-activation" element={<ResendActivation />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
-            </Route>
-            <Route path="/dashboard" element={<PrivateRoute><DashboardLayout /></PrivateRoute>} >
-            <Route index element={<Dashboard />} />
-            <Route path="profile" element={<Profile />} />
-            </Route>
-        </Routes>
+
+        <Route path="/" element={<MainLayout />}>
+
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="shop" element={<Shop />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+
+        <Route path="activate/:uid/:token" element={<ActivateAccount />} />
+        <Route path="resend-activation" element={<ResendActivation />} />
+        <Route path="reset-password" element={<ResetPassword />} />
+        <Route path="password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
+
+        </Route>
+
+        <Route path="/dashboard" element={ <PrivateRoute> <DashboardLayout /> </PrivateRoute> } >
+
+        <Route index element={<Dashboard />} />
+        <Route path="profile" element={<Profile />} />
+        
+        </Route>
+
+        <Route path="*" element={<h1 className="text-center mt-20 text-2xl">404 - Page Not Found</h1>} />
+      </Routes>
     );
 };
 
