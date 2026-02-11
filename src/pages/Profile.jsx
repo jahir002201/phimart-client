@@ -8,8 +8,9 @@ import ErroAlert from "../components/ErroAlert";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const { user, updateUserProfile, changePassword, errorMsg } =
-    useAuthContext();
+  const [loading, setLoading] = useState(false);
+  const { user, updateUserProfile, changePassword, errorMsg } = useAuthContext();
+
   const {
     register,
     handleSubmit,
@@ -23,7 +24,7 @@ const Profile = () => {
   }, [user, setValue]);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setLoading(true);
     try {
       // Profile update
       const profilePayload = {
@@ -44,8 +45,14 @@ const Profile = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if(loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="card w-full max-w-2xl mx-auto bg-base-100 shadow-xl">
