@@ -15,7 +15,7 @@ const Navbar = ({ sidebarOpen }) => {
 
       {/* Title */}
       <div className="flex-1">
-        <h2 className="text-lg font-semibold">Dashboard</h2>
+        <h2 className="text-lg font-semibold"><Link to="/dashboard">Dashboard</Link></h2>
       </div>
 
       {/* User dropdown */}
@@ -35,8 +35,7 @@ const Navbar = ({ sidebarOpen }) => {
           >
             <li>
               <Link to="/dashboard/profile" className="justify-between">
-                Profile
-                <span className="badge">New</span>
+                <button>Profile</button>
               </Link>
             </li>
             <li>

@@ -1,4 +1,35 @@
+import { useEffect, useState } from "react";
+import authApiClient from "../../services/auth-api-client";
+
 const Order = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await authApiClient.get("/orders/");
+        setOrders(res.data);
+      } catch (err) {
+        console.error("Error fetching orders:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  if (loading) return <div>Loading orders...</div>;
+
+  const statusClasses = {
+    "Not Paid": "badge-warning",
+    "Ready To Ship": "badge-info",
+    "Shipped": "badge-primary",
+    "Delivered": "badge-success",
+    "Canceled": "badge-error",
+  };
+
   return (
     <div className="mt-6 card bg-base-100 shadow-sm">
       <div className="card-body">
@@ -15,42 +46,19 @@ const Order = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>#ORD-7245</td>
-                <td>John Smith</td>
-                <td>
-                  <div className="badge badge-success">Completed</div>
-                </td>
-                <td>Mar 8, 2025</td>
-                <td>$125.00</td>
-              </tr>
-              <tr>
-                <td>#ORD-7244</td>
-                <td>Sarah Johnson</td>
-                <td>
-                  <div className="badge badge-warning">Processing</div>
-                </td>
-                <td>Mar 7, 2025</td>
-                <td>$89.99</td>
-              </tr>
-              <tr>
-                <td>#ORD-7243</td>
-                <td>Michael Brown</td>
-                <td>
-                  <div className="badge badge-info">Shipped</div>
-                </td>
-                <td>Mar 7, 2025</td>
-                <td>$245.50</td>
-              </tr>
-              <tr>
-                <td>#ORD-7242</td>
-                <td>Emily Davis</td>
-                <td>
-                  <div className="badge badge-success">Completed</div>
-                </td>
-                <td>Mar 6, 2025</td>
-                <td>$112.75</td>
-              </tr>
+              {orders.slice(0, 5).map((order) => (
+                <tr key={order.id}>
+                  <td>#{order.id}</td>
+                  <td>{order.user?.first_name} {order.user?.last_name || ""}</td>
+                  <td>
+                    <div className={`badge ${statusClasses[order.status] || "badge-info"}`}>
+                      {order.status}
+                    </div>
+                  </td>
+                  <td>{new Date(order.created_at).toLocaleDateString()}</td>
+                  <td>${order.total_price?.toFixed(2) || 0}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

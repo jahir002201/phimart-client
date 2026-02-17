@@ -83,6 +83,7 @@ const useAuth = () => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
+    
   };
 
   // Update user profile
